@@ -38,6 +38,9 @@ Then, add *C:\vcpkg\installed\x64-windows\bin* and *C:\vcpkg\installed\x64-windo
 ## Basic Build Instructions
 
 1. Clone this repo.
-2. Make a build directory in the top level directory: `mkdir build && cd build`
-3. Compile: `cmake .. && make`
-4. Run it: `./2D_feature_tracking`.
+2. Build Docker container `docker build . -t feature_tracking`
+3. Allow local connections to your X server `xhost +local:`
+4. Run the docker container and forward display `docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/app feature_tracking`
+5. (From the container) Make a build directory in the top level directory: `mkdir build && cd build`
+6. (From the container) Compile: `cmake .. && make`
+7. (From the container) Run it: `./2D_feature_tracking`.
