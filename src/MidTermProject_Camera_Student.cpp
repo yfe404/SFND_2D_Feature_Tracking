@@ -43,7 +43,7 @@ int main(int argc, const char *argv[])
     // misc
     int dataBufferSize = 2;       // no. of images which are held in memory (ring buffer) at the same time
     deque<DataFrame> dataBuffer; // list of data frames which are held in memory at the same time
-    bool bVis = false;            // visualize results
+    bool bVis = true;            // visualize results
 
     /* MAIN LOOP OVER ALL IMAGES */
 
@@ -80,20 +80,25 @@ int main(int argc, const char *argv[])
 
         // extract 2D keypoints from current image
         vector<cv::KeyPoint> keypoints; // create empty feature list for current image
-        string detectorType = "SHITOMASI";
+        //string detectorType = "SHITOMASI";
 
         //// STUDENT ASSIGNMENT
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
 
-        if (detectorType.compare("SHITOMASI") == 0)
-        {
-            detKeypointsShiTomasi(keypoints, imgGray, false);
-        }
-        else
-        {
-            //...
-        }
+	DetectorType dt = sift;
+
+	switch(dt) {
+	case DetectorType::akaze : detKeypointsModern(keypoints, img, dt, bVis); break;
+	case DetectorType::brisk : detKeypointsModern(keypoints, img, dt, bVis); break;
+	case DetectorType::fast : detKeypointsModern(keypoints, img, dt, bVis); break;
+	case DetectorType::harris : detKeypointsHarris(keypoints, imgGray, bVis); break;
+	case DetectorType::orb : detKeypointsModern(keypoints, img, dt, bVis); break;
+	case DetectorType::shitomasi : detKeypointsShiTomasi(keypoints, imgGray, bVis); break;
+	case DetectorType::sift : detKeypointsModern(keypoints, img, dt, bVis); break;
+	default: throw std::runtime_error("Error unknown detector type.");
+	}
+
         //// EOF STUDENT ASSIGNMENT
 
         //// STUDENT ASSIGNMENT
@@ -104,21 +109,23 @@ int main(int argc, const char *argv[])
         cv::Rect vehicleRect(535, 180, 180, 150);
         if (bFocusOnVehicle)
         {
-            // ...
+	  keypoints.erase(std::remove_if(begin(keypoints), end(keypoints), [vehicleRect](cv::KeyPoint kp) { return !vehicleRect.contains(kp.pt); }), end(keypoints));
         }
 
         //// EOF STUDENT ASSIGNMENT
 
         // optional : limit number of keypoints (helpful for debugging and learning)
-        bool bLimitKpts = false;
+        bool bLimitKpts = true;
         if (bLimitKpts)
         {
-            int maxKeypoints = 50;
+	  int maxKeypoints = 50;
 
-            if (detectorType.compare("SHITOMASI") == 0)
-            { // there is no response info, so keep the first 50 as they are sorted in descending quality order
-                keypoints.erase(keypoints.begin() + maxKeypoints, keypoints.end());
-            }
+
+	  switch(dt) { 
+	  case shitomasi :
+	    // there is no response info, so keep the first 50 as they are sorted in descending quality order
+	    keypoints.erase(keypoints.begin() + maxKeypoints, keypoints.end()); break ;
+	  }
             cv::KeyPointsFilter::retainBest(keypoints, maxKeypoints);
             cout << " NOTE: Keypoints have been limited!" << endl;
         }

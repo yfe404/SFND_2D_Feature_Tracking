@@ -4,6 +4,7 @@
 #include <vector>
 #include <opencv2/core.hpp>
 
+typedef enum detector_type { shitomasi, harris, brisk, orb, akaze, sift, fast } DetectorType;
 
 struct DataFrame { // represents the available sensor information at the same time instance
     
