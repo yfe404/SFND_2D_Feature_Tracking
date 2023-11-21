@@ -18,8 +18,11 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
     }
     else if (matcherType.compare("MAT_FLANN") == 0)
     {
-      	// FLANN requires descriptors to be of type CV_32F (float32).
-      if ( descriptorType.compare("DES_BINARY") == 0 ) {
+      // FLANN requires descriptors to be of type CV_32F (float32).
+      // At the time of writing (May 2019), there is a potential bug in the current implementation of the OpenCV,
+      // which requires a conversion of the binary descriptors into floating point vectors, which is inefficient.
+      // Yet still there is an improvement in speed, albeit not as large as it potentially could be.
+      if (descSource.type() != CV_32F) {
 	  descSource.convertTo(descSource, CV_32F);
 	  descRef.convertTo(descRef, CV_32F);
 	}
