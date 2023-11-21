@@ -48,6 +48,6 @@ Then, add *C:\vcpkg\installed\x64-windows\bin* and *C:\vcpkg\installed\x64-windo
 
 ## Task 7 
 
-Compiling using th CMake file generate a executable `./task7` running it counts the number of keypoints on the preceding vehicle for all 10 images and all the detectors. It generates one `.dat` file for each detector in `output/task7/`. To visualize the results we provide a script `plot.py`. To run it you must install the dependencies first: from `output/task7/` run `python -m venv venv && source venv/bin/activate && pip install -r requirements.txt`. Then run `python plot.py FILE.dat`. For example here is the result obtained with `orb.dat`: 
+Compiling using thw CMake file generates a executable `./task7` running it counts the number of keypoints on the preceding vehicle for all 10 images and all the detectors. It generates one `.dat` file for each detector in `output/task7/`. To visualize the results we provide a script `plot.py`. To run it you must install the dependencies first: from `output/task7/` run `python -m venv venv && source venv/bin/activate && pip install -r requirements.txt`. Then run `python plot.py FILE.dat`. For example here is the result obtained with `orb.dat`: 
 
 <img src="images/orb-detector.png" width="820" height="248" />
