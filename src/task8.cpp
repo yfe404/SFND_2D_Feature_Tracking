@@ -68,28 +68,20 @@ int main(int argc, const char *argv[])
       std::vector<std::vector<float>> sizes;
 
       /*LOOP OVER ALL DESCRIPTOR TYPES */
-
-      
       for (const string& descriptorType: descriptorTypes) {
-	vector<int> n_matches;
-	bool compat = true; // compat between detector and descriptor 
 
 	if (descriptorType.compare("AKAZE") == 0 && dt != DetectorType::akaze)
 	  continue;
 
-	if (descriptorType.compare("ORB") == 0 && dt == DetectorType::sift){ // tries to allocate  to much memory
+	if (descriptorType.compare("ORB") == 0 && dt == DetectorType::sift) // tries to allocate  to much memory
 	  continue;
-	}
-
-	  
-	cout << "+++++++++++"  << detectorNames[dt] << " - " << descriptorType << std::endl; 
-
 
 	deque<DataFrame> dataBuffer; // list of data frames which are held in memory at the same time
+	vector<int> n_matches; // number of matches
+	
 	/*LOOP OVER ALL IMAGES */
 	for (size_t imgIndex = 0; imgIndex <= imgEndIndex - imgStartIndex; imgIndex++)
 	  {
-	    std::vector<float> _sizes;
 	    /* LOAD IMAGE INTO BUFFER */
 	  
 	    // assemble filenames for current index
@@ -105,7 +97,7 @@ int main(int argc, const char *argv[])
 	    // push image into data frame buffer
 	    DataFrame frame;
 	    frame.cameraImg = imgGray;
-	    if ( dataBuffer.size() == dataBufferSize ){
+	    if ( dataBuffer.size() == dataBufferSize ) {
 	      dataBuffer.pop_front();
 	    }
 	    dataBuffer.push_back(frame);
@@ -118,7 +110,7 @@ int main(int argc, const char *argv[])
 	    vector<cv::KeyPoint> keypoints; // create empty feature list for current image
 	    
 	    switch(dt) {
-	  case DetectorType::akaze : detKeypointsModern(keypoints, img, dt, bVis); break;
+	    case DetectorType::akaze : detKeypointsModern(keypoints, img, dt, bVis); break;
 	    case DetectorType::brisk : detKeypointsModern(keypoints, img, dt, bVis); break;
 	    case DetectorType::fast : detKeypointsModern(keypoints, img, dt, bVis); break;
 	    case DetectorType::harris : detKeypointsHarris(keypoints, imgGray, bVis); break;
@@ -136,56 +128,50 @@ int main(int argc, const char *argv[])
 	    cout << "#2 : DETECT KEYPOINTS done" << endl;
 
 	    cv::Mat descriptors;
-	    //try {
-	      descKeypoints((dataBuffer.end() - 1)->keypoints, (dataBuffer.end() - 1)->cameraImg, descriptors, descriptorType);
+	    descKeypoints((dataBuffer.end() - 1)->keypoints, (dataBuffer.end() - 1)->cameraImg, descriptors, descriptorType);
 	    
-	      // push descriptors for current frame to end of data buffer
-	      (dataBuffer.end() - 1)->descriptors = descriptors;
+	    // push descriptors for current frame to end of data buffer
+	    (dataBuffer.end() - 1)->descriptors = descriptors;
 	      
 	      
-	      if (dataBuffer.size() > 1) // wait until at least two images have been processed
-		{
-		  /* MATCH KEYPOINT DESCRIPTORS */
-
-		  vector<cv::DMatch> matches;
-		  string matcherType = "MAT_BF";        // MAT_BF, MAT_FLANN
-		  if (descriptorType.compare("SIFT") == 0) {
-		    string descriptorType = "DES_HOG"; // DES_BINARY, DES_HOG
-		  } else {
-		    string descriptorType = "DES_BINARY"; // DES_BINARY, DES_HOG
-		  }
-		  string selectorType = "SEL_NN";       // SEL_NN, SEL_KNN
-		  
-		  matchDescriptors((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints,
-				   (dataBuffer.end() - 2)->descriptors, (dataBuffer.end() - 1)->descriptors,
-				   matches, descriptorType, matcherType, selectorType);
-		  
-		  (dataBuffer.end() - 1)->kptMatches = matches;
-		  
-		  cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << endl;
-		  n_matches.push_back(matches.size());
-		  
+	    if (dataBuffer.size() > 1) // wait until at least two images have been processed
+	      {
+		/* MATCH KEYPOINT DESCRIPTORS */
+		
+		vector<cv::DMatch> matches;
+		string matcherType = "MAT_BF";        // MAT_BF, MAT_FLANN
+		if (descriptorType.compare("SIFT") == 0) {
+		  string descriptorType = "DES_HOG"; // DES_BINARY, DES_HOG
+		} else {
+		  string descriptorType = "DES_BINARY"; // DES_BINARY, DES_HOG
 		}
-	      //} catch(...) {
-	      // ignore incompatibilities between detector / descriptor / matcher
-	      //compat = false;
-	      //}
-
+		string selectorType = "SEL_NN";       // SEL_NN, SEL_KNN
+		
+		matchDescriptors((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints,
+				 (dataBuffer.end() - 2)->descriptors, (dataBuffer.end() - 1)->descriptors,
+				 matches, descriptorType, matcherType, selectorType);
+		
+		(dataBuffer.end() - 1)->kptMatches = matches;
+		
+		cout << "#4 : MATCH KEYPOINT DESCRIPTORS done" << endl;
+		n_matches.push_back(matches.size());
+		
+	      }
+	    
 	  } // eof loop over all images
-
+	
 	// write result to file
-	if (compat){ 
-	  std::ofstream file(resPath + detectorNames[i] + "_" + descriptorType + ".dat");
-	  if (!file.is_open()) {
-	    throw std::runtime_error("Error opening file for writing.");
-	  }
-	  
-	  for (const auto& val : n_matches) {
-	    file << val << " ";
-	  }
-	  
-	  file.close();
-	} // endif compat
+	std::ofstream file(resPath + detectorNames[i] + "_" + descriptorType + ".dat");
+	if (!file.is_open()) {
+	  throw std::runtime_error("Error opening file for writing.");
+	}
+	
+	for (const auto& val : n_matches) {
+	  file << val << " ";
+	}
+	
+	file.close();
+
       } // eof loop over all descriptor types
     } // eof loop over all detectors
     
