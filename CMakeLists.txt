@@ -24,3 +24,7 @@ target_link_libraries (task7 ${OpenCV_LIBRARIES})
 # Executable for computing stats for task 8
 add_executable (task8 src/matching2D_Student.cpp src/task8.cpp)
 target_link_libraries (task8 ${OpenCV_LIBRARIES})
+
+# Executable for computing stats for task 9
+add_executable (task9 src/matching2D_Student.cpp src/task9.cpp)
+target_link_libraries (task9 ${OpenCV_LIBRARIES})

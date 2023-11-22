@@ -57,7 +57,7 @@ Compiling using thw CMake file generates a executable `./task7` running it count
 
 The number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8. 
 
-| Detector | AKAZE | BRIEF | BRISK | FREAK | ORB | SIFT |
+| Detector / Descriptor | AKAZE | BRIEF | BRISK | FREAK | ORB | SIFT |
 |---|---|---|---|---|---|---|
 | sift | n/a | 1250 | 1249 | 1240 | Out of Memory Error | 1250 |
 | brisk | n/a | 2508 | 2508 | 2326 | 2508 | 2508 |
@@ -66,3 +66,18 @@ The number of matched keypoints for all 10 images using all possible combination
 | shitomasi | n/a | 1067 | 1067 | 1067 | 1067 | 1067 |
 | orb |n/a  | 1033 | 950 | 549 | 1033 | 1033 |
 | akaze | 1491 | 1491 | 1491 | 1491 | 1491 | 1491 |
+
+## Task 9
+
+Average Processing Time (ms) on all images for each detector/descriptor combination.
+
+| Detector / Descriptor | AKAZE | BRIEF | BRISK | FREAK | ORB | SIFT |
+|---|---|---|---|---|---|---|
+| sift |  | 58.37 | 222.22 | 84.54 |  | 128.85 |
+| brisk |  | 207.96 | 378.53 | 222.17 | 211.88 | 218.34 |
+| fast |  | 4.08 | 170.74 | 28.48 | 4.64 | 16.03 |
+| harris |  | 11.1 | 178.83 | 35.54 | 12.72 | 19.98 |
+| shitomasi |  | 10.68 | 180.03 | 35.98 | 10.76 | 19.53 |
+| orb |  | 7.71 | 174.05 | 31.28 | 11.29 | 27.68 |
+| akaze | 86.72 | 44.83 | 206.57 | 71.98 | 44.76 | 58.08 |
+
