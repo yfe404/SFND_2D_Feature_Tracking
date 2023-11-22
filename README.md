@@ -51,3 +51,18 @@ Then, add *C:\vcpkg\installed\x64-windows\bin* and *C:\vcpkg\installed\x64-windo
 Compiling using thw CMake file generates a executable `./task7` running it counts the number of keypoints on the preceding vehicle for all 10 images and all the detectors. It generates one `.dat` file for each detector in `output/task7/`. To visualize the results we provide a script `plot.py`. To run it you must install the dependencies first: from `output/task7/` run `python -m venv venv && source venv/bin/activate && pip install -r requirements.txt`. Then run `python plot.py FILE.dat`. For example here is the result obtained with `orb.dat`: 
 
 <img src="images/orb-detector.png" width="820" height="248" />
+
+
+## Task 8
+
+The number of matched keypoints for all 10 images using all possible combinations of detectors and descriptors. In the matching step, the BF approach is used with the descriptor distance ratio set to 0.8. 
+
+| Detector | AKAZE | BRIEF | BRISK | FREAK | ORB | SIFT |
+|---|---|---|---|---|---|---|
+| sift | n/a | 1250 | 1249 | 1240 | Out of Memory Error | 1250 |
+| brisk | n/a | 2508 | 2508 | 2326 | 2508 | 2508 |
+| fast | n/a  | 3693 | 3693 | 3693 | 3693 | 3693 |
+| harris | n/a | 214 | 214 | 214 | 214 | 214 |
+| shitomasi | n/a | 1067 | 1067 | 1067 | 1067 | 1067 |
+| orb |n/a  | 1033 | 950 | 549 | 1033 | 1033 |
+| akaze | 1491 | 1491 | 1491 | 1491 | 1491 | 1491 |

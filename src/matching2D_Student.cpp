@@ -13,8 +13,9 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
 
     if (matcherType.compare("MAT_BF") == 0)
     {
-        int normType = cv::NORM_HAMMING;
-        matcher = cv::BFMatcher::create(normType, crossCheck);
+      
+      int normType = descriptorType.compare("DES_BINARY") == 0 ? cv::NORM_HAMMING : cv::NORM_L2;
+      matcher = cv::BFMatcher::create(normType, crossCheck);
     }
     else if (matcherType.compare("MAT_FLANN") == 0)
     {
@@ -34,7 +35,21 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
     if (selectorType.compare("SEL_NN") == 0)
     { // nearest neighbor (best match)
 
-        matcher->match(descSource, descRef, matches); // Finds the best match for each descriptor in desc1
+
+      // Before calling batchDistance, add the following logging:
+std::cout << "Matrix descSource properties:" << std::endl;
+std::cout << " - Rows: " << descSource.rows << std::endl;
+std::cout << " - Cols: " << descSource.cols << std::endl;
+std::cout << " - Type: " << descSource.type() << " (CV_32F = " << CV_32F << ", CV_8U = " << CV_8U << ")" << std::endl;
+
+std::cout << "Matrix descRef properties:" << std::endl;
+std::cout << " - Rows: " << descRef.rows << std::endl;
+std::cout << " - Cols: " << descRef.cols << std::endl;
+std::cout << " - Type: " << descRef.type() << " (CV_32F = " << CV_32F << ", CV_8U = " << CV_8U << ")" << std::endl;
+
+
+ 
+ matcher->match(descSource, descRef, matches); // Finds the best match for each descriptor in desc1
     }
     else if (selectorType.compare("SEL_KNN") == 0)
     { // k nearest neighbors (k=2)

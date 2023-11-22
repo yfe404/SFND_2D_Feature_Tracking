@@ -20,3 +20,7 @@ target_link_libraries (2D_feature_tracking ${OpenCV_LIBRARIES})
 # Executable for computing stats for task 7
 add_executable (task7 src/matching2D_Student.cpp src/task7.cpp)
 target_link_libraries (task7 ${OpenCV_LIBRARIES})
+
+# Executable for computing stats for task 8
+add_executable (task8 src/matching2D_Student.cpp src/task8.cpp)
+target_link_libraries (task8 ${OpenCV_LIBRARIES})
