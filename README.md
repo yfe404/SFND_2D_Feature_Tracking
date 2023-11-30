@@ -81,3 +81,32 @@ Average Processing Time (ms) on all images for each detector/descriptor combinat
 | orb |  | 7.71 | 174.05 | 31.28 | 11.29 | 27.68 |
 | akaze | 86.72 | 44.83 | 206.57 | 71.98 | 44.76 | 58.08 |
 
+
+
+
+## Conclusion 
+
+To recommend the top 3 detector/descriptor combinations for the purpose of detecting keypoints on vehicles, we need to consider both the number of matched keypoints (as a measure of effectiveness) and the average processing time (as a measure of efficiency). The ideal combinations will have a high number of matched keypoints and a relatively low processing time.
+
+
+Let's consider that both speed (average processing time) and the number of keypoints are equally important for determining the effectiveness of detector/descriptor combinations, we need to balance these two factors to find the top 3 choices. Our chosen approach is to calculate a combined score that takes both aspects into account.
+
+One way to do this is by normalizing both the number of keypoints and processing times, and then calculating a composite score. However, since higher keypoints are better and lower times are better, we need to invert one of these measures. We'll invert the processing time so that for both metrics, a higher score is better.
+
+| Detector / Descriptor | AKAZE | BRIEF | BRISK | FREAK | ORB | SIFT |
+|-----------------------|-------|-------|-------|-------|-----|------|
+| akaze                 | 1.183 | 1.295 | 0.863 | 1.222 |     | 1.260 |
+| brisk                 |       | 1.135 | 0.679 | 1.047 |     | 1.107 |
+| fast                  |       | 2.000 | 1.555 | 1.935 | 1.999 | 1.968 |
+| harris                |       | 1.039 | 0.591 | 0.974 |     | 1.015 |
+| orb                   |       | 1.270 | 0.803 | 1.076 |     | 1.217 |
+| shitomasi             |       | 1.271 | 0.819 | 1.204 |     | 1.248 |
+| sift                  |       | 1.193 | 0.756 | 1.121 |     | 1.005 |
+
+Based on the composite scores that consider both the number of matched keypoints and the average processing time, here are the top 3 detector/descriptor combinations for detecting keypoints on vehicles:
+
+1. FAST + BRIEF: This combination is the top choice, with the highest composite score, indicating an excellent balance of a high number of matched keypoints and extremely low processing time.
+
+2. FAST + ORB: This combination almost ties with FAST + BRIEF, showcasing a similar balance of effectiveness in keypoint detection and efficiency in processing speed.
+
+3. FAST + FREAK: This combination  still demonstrates a strong balance between the number of keypoints detected and processing efficiency.
