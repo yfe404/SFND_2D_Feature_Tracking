@@ -86,7 +86,7 @@ int main(int argc, const char *argv[])
         //// TASK MP.2 -> add the following keypoint detectors in file matching2D.cpp and enable string-based selection based on detectorType
         //// -> HARRIS, FAST, BRISK, ORB, AKAZE, SIFT
 
-	DetectorType dt = sift;
+	DetectorType dt = akaze;
 
 	switch(dt) {
 	case DetectorType::akaze : detKeypointsModern(keypoints, img, dt, bVis); break;
@@ -101,6 +101,7 @@ int main(int argc, const char *argv[])
 
         //// EOF STUDENT ASSIGNMENT
 
+	
         //// STUDENT ASSIGNMENT
         //// TASK MP.3 -> only keep keypoints on the preceding vehicle
 
@@ -140,7 +141,7 @@ int main(int argc, const char *argv[])
         //// -> BRIEF, ORB, FREAK, AKAZE, SIFT
 
         cv::Mat descriptors;
-        string descriptorType = "BRIEF"; // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
+        string descriptorType = "AKAZE"; // BRISK, BRIEF, ORB, FREAK, AKAZE, SIFT
         descKeypoints((dataBuffer.end() - 1)->keypoints, (dataBuffer.end() - 1)->cameraImg, descriptors, descriptorType);
         //// EOF STUDENT ASSIGNMENT
 
@@ -156,7 +157,7 @@ int main(int argc, const char *argv[])
             /* MATCH KEYPOINT DESCRIPTORS */
 
             vector<cv::DMatch> matches;
-            string matcherType = "MAT_FLANN";        // MAT_BF, MAT_FLANN
+            string matcherType = "MAT_BF";        // MAT_BF, MAT_FLANN
             string descriptorType = "DES_BINARY"; // DES_BINARY, DES_HOG
             string selectorType = "SEL_KNN";       // SEL_NN, SEL_KNN
 
