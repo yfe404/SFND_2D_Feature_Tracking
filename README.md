@@ -95,13 +95,13 @@ One way to do this is by normalizing both the number of keypoints and processing
 
 | Detector / Descriptor | AKAZE | BRIEF | BRISK | FREAK | ORB | SIFT |
 |-----------------------|-------|-------|-------|-------|-----|------|
-| akaze                 | 1.183 | 1.295 | 0.863 | 1.222 |     | 1.260 |
-| brisk                 |       | 1.135 | 0.679 | 1.047 |     | 1.107 |
-| fast                  |       | 2.000 | 1.555 | 1.935 | 1.999 | 1.968 |
-| harris                |       | 1.039 | 0.591 | 0.974 |     | 1.015 |
-| orb                   |       | 1.270 | 0.803 | 1.076 |     | 1.217 |
-| shitomasi             |       | 1.271 | 0.819 | 1.204 |     | 1.248 |
-| sift                  |       | 1.193 | 0.756 | 1.121 |     | 1.005 |
+| akaze                 | 1.183 | 1.295 | 0.863 | 1.222 | 1.295 | 1.260 |
+| brisk                 | 0.000 | 1.135 | 0.679 | 1.047 | 1.124 | 1.107 |
+| fast                  | 0.000 | 2.000 | 1.555 | 1.935 | 1.999 | 1.968 |
+| harris                | 0.000 | 1.039 | 0.591 | 0.974 | 1.035 | 1.015 |
+| orb                   | 0.000 | 1.270 | 0.803 | 1.076 | 1.260 | 1.217 |
+| shitomasi             | 0.000 | 1.271 | 0.819 | 1.204 | 1.271 | 1.248 |
+| sift                  | 0.000 | 1.193 | 0.756 | 1.121 | 0.000 | 1.005 |
 
 Based on the composite scores that consider both the number of matched keypoints and the average processing time, here are the top 3 detector/descriptor combinations for detecting keypoints on vehicles:
 
